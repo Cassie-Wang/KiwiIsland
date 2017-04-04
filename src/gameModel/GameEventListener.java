@@ -6,7 +6,7 @@
  * @version 1.0 - created
  */
 
-package gameModel;
+package nz.ac.aut.ense701.gameModel;
 
 public interface GameEventListener 
 {

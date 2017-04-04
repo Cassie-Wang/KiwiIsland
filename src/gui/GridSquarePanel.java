@@ -1,10 +1,10 @@
-package gui;
+package nz.ac.aut.ense701.gui;
 
 import java.awt.Color;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import gameModel.Game;
-import gameModel.Terrain;
+import nz.ac.aut.ense701.gameModel.Game;
+import nz.ac.aut.ense701.gameModel.Terrain;
 
 /*
  * Panel for representing a single GridSquare of the island on the GUI.

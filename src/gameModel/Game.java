@@ -1,15 +1,10 @@
-package gameModel;
+package nz.ac.aut.ense701.gameModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -36,7 +31,7 @@ public class Game
     /**
      * A new instance of Kiwi island that reads data from "IslandData.txt".
      */
-    public Game() throws FileNotFoundException 
+    public Game() 
     {   
         eventListeners = new HashSet<GameEventListener>();
 
@@ -48,14 +43,13 @@ public class Game
      * Starts a new game.
      * At this stage data is being read from a text file
      */
-    public void createNewGame() throws FileNotFoundException
+    public void createNewGame()
     {
         totalPredators = 0;
         totalKiwis = 0;
         predatorsTrapped = 0;
         kiwiCount = 0;
-        RandomAMap(10, 10, 5, 5, 5, 5, 5, 5);
-        initialiseIslandFromFile("RandomMap.txt");
+        initialiseIslandFromFile("IslandData.txt");
         drawIsland();
         state = GameState.PLAYING;
         winMessage = "";
@@ -717,7 +711,7 @@ public class Game
      * 
      * @param fileName file name of the data file
      */
-    private void initialiseIslandFromFile(String fileName)                                              
+    private void initialiseIslandFromFile(String fileName) 
     {
         try
         {
@@ -750,87 +744,6 @@ public class Game
         {
             System.err.println("Problem encountered processing file.");
         }
-    }
-    //make a random file to read
-    private void RandomAMap(int row, int column, int T, int E, int H, int K, int P, int F) throws FileNotFoundException //Currently can only number occupant, will be posible to have player information
-    {
-        ArrayList<String> lines = new ArrayList<String>();
-        lines.add(row+", "+column+",");                             //first line is the size of the map
-        //Random a map 
-        String terrain[] = new String[row * column];                //make a string array has the same number of object as the map
-        for (int i = 0; i < terrain.length; i++)
-        {
-            terrain[i] = RandomTerrain();
-        }
-        
-        String aline = ""; int j = 0;
-        for (int r = 0; r < row; r++)                               //Creat terrain map
-        {
-            for (int c = 0; c < column; c++)
-            {
-                aline = aline + terrain[j];
-                j++;
-            }
-            aline = aline + ","; 
-            lines.add(aline);
-            aline = "";
-        }
-        
-        lines.add("River Song, 0, 2, 100.0, 10.0, 5.0,");           //Player
-        
-        int itemNumber = T+E+H+K+P+F;                               //item number
-        lines.add(itemNumber+",");
-        //add items
-        String[] positionString = RandomPosition(itemNumber,row,column);        int a = 0;
-        for (int i = 0; i < E; i++)                                 //add E
-        {
-            String s = RandomE();
-            s = s.replace("occRow,occCol", positionString[a]);
-            a++;
-            lines.add(s);
-        }
-        for (int i = 0; i < T; i++)                                 //add T
-        {
-            String s = RandomT();
-            s = s.replaceAll("occRow,occCol", positionString[a]);
-            a++;
-            lines.add(s);
-        }
-        for (int i = 0; i < F; i++)                                 //add F
-        {
-            String s = RandomF();
-            s = s.replaceAll("occRow,occCol", positionString[a]);
-            a++;
-            lines.add(s);
-        }
-        for (int i = 0; i < K; i++)                                 //add K
-        {
-            String s = RandomK();
-            s = s.replaceAll("occRow,occCol", positionString[a]);
-            a++;
-            lines.add(s);
-        }
-        for (int i = 0; i < P; i++)                                 //add P
-        {
-            String s = RandomP();
-            s = s.replace("occRow,occCol", positionString[a]);
-            a++;
-            lines.add(s);
-        }
-        for (int i = 0; i < H; i++)                                 //add H
-        {
-            String s = RandomH();
-            s = s.replace("occRow,occCol", positionString[a]);
-            a++;
-            lines.add(s);
-        }
-        //make the file
-        PrintWriter outputStream  = new PrintWriter(new FileOutputStream("RandomMap.txt"));
-        for (int i = 0; i < lines.size(); i++)
-        {
-            outputStream.println(lines.get(i));
-        }
-        outputStream.close();
     }
 
     /**
@@ -924,121 +837,8 @@ public class Game
             }
             if ( occupant != null ) island.addOccupant(occPos, occupant);
         }
-    }
-    
-    private String RandomTerrain()
-    {
-        String terrain = ""; int i;
-        Random rand = new Random();
-        i = rand.nextInt(5);
-        if(i == 0)      {terrain = ".";}
-        else if (i == 1){terrain = "*";}
-        else if (i == 2){terrain = "#";}
-        else if (i == 3){terrain = "^";}
-        else            {terrain = "~";}
-        return terrain;
-    }
-    private String RandomT()
-    {
-        String T = ""; int i;
-        Random rand = new Random();
-        i = rand.nextInt(4);
-        if(i < 3)       {T = "T,Trap,A trap for predators,occRow,occCol, 1.0, 1.0,";}
-        else            {T = "T,Screwdriver,A screwdriver that is useful for fixing traps,occRow,occCol, 0.5, 0.75,";}
-        return T;
-    }
-    private String RandomE()
-    {
-        String E = ""; int i;
-        Random rand = new Random();
-        i = rand.nextInt(4);
-        if(i == 0)      {E = "E,Sandwich,A nice and healthy sandwich,occRow,occCol, 2.0, 1.0, 50.0,";}
-        else if (i == 1){E = "E,Muesli Bar,A juicy and nutricious muesli bar,occRow,occCol, 1.0, 1.0, 50.0,";}
-        else if (i == 2){E = "E,Apple,A juicy apple, occRow,occCol, 2.0, 3.0, 50.0,";}
-        else            {E = "E,Orange Juice,A bottle of juice, occRow,occCol, 2.0, 3.0, 50.0,";}
-        return E;
-    }
-    private String RandomH()
-    {
-        String H = ""; int i;
-        Random rand = new Random();
-        i = rand.nextInt(7);
-        if(i == 0)      {H = "H,Cliff,A fall down a steep rocky cliff,occRow,occCol,1.0,";}
-        else if (i == 1){H = "H,Pond,A fall into a deep pond,occRow,occCol,1.0,";}
-        else if (i == 2){H = "H,Rock,A large falling rock,occRow,occCol,1.0,";}
-        else if (i == 3){H = "H,Sunburn,Too much sun has given you bad sunburn and,occRow,occCol,0.3,";}
-        else if (i == 4){H = "H,Fall,Tripping on roots hurt your ankle and,occRow,occCol,0.5,";}
-        else if (i == 5){H = "H,Cliff,A fall down a small cliff,occRow,occCol,0.3,";}
-        else            {H = "H,Broken trap,Your predator trap has broken,occRow,occCol,0.0,";}
-        return H;
-    }
-    private String RandomK()
-    {
-        String K = ""; int i;
-        Random rand = new Random();
-        i = rand.nextInt(2);
-        if(i == 0)      {K = "K,Kiwi,A little spotted kiwi,occRow,occCol,";}
-        else            {K = "K,Kiwi,A large brown kiwi,occRow,occCol,";}
-        
-        return K;
-    }
-    private String RandomP()
-    {
-        String P = ""; int i;
-        Random rand = new Random();
-        i = rand.nextInt(5);
-        if(i == 0)      {P = "P,Rat,A Norwegian rat,occRow,occCol,";}
-        else if (i == 1){P = "P,Cat,A wild cat,occRow,occCol,";}
-        else if (i == 2){P = "P,Kiore,A pacific rat,occRow,occCol,";}
-        else if (i == 3){P = "P,Stoat,A brown and white stoat,occRow,occCol,";}
-        else            {P = "P,Possum,A bushy tailed possum,occRow,occCol,";}
-        return P;
-    }
-    private String RandomF()
-    {
-        String F = ""; int i;
-        Random rand = new Random();
-        i = rand.nextInt(5);
-        if(i == 0)      {F = "F,Oystercatcher,A variable oystercatcher sitting on sand,occRow,occCol,";}
-        else if (i == 1){F = "F,Crab,A scuttling crab,occRow,occCol,";}
-        else if (i == 2){F = "F,Fernbird,A shy fernbird,occRow,occCol,";}
-        else if (i == 3){F = "F,Heron,A white-faced heron,occRow,occCol,";}
-        else if (i == 4){F = "F,Tui,A singing tui,occRow,occCol,";}
-        else            {F = "F,Robin,A black robin,occRow,occCol,";}
-        return F;
-    }
-    private String[] RandomPosition(int n, int row, int col)
-    {
-        String positionString[] = new String[n];
-        ArrayList<Boolean> boo = new ArrayList<Boolean>();
-        for (int i = 0; i < row*col; i++)                    //set 1D array
-        {
-            if (i < n)
-            {
-                boo.add(true); 
-            }
-            else
-            {
-                 boo.add(false); 
-            }
-        }
-        Collections.shuffle(boo);                           //random 1D array
-        
-        int a = 0; int b = 0;
-        for (int i = 0; i < row; i++)
-        {
-            for (int j = 0; j < col; j++)
-            {
-                if(boo.get(a))
-                {
-                    positionString[b] = i+","+j;
-                    b++;
-                }
-                a++;
-            }
-        }
-        return positionString;
-    }
+    }    
+
 
     private Island island;
     private Player player;

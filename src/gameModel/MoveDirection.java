@@ -1,4 +1,4 @@
-package gameModel;
+package nz.ac.aut.ense701.gameModel;
 
 /**
  * Enumeration class MoveDirection - describes the direction of a move

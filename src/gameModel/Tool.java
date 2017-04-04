@@ -1,4 +1,4 @@
-package gameModel;
+package nz.ac.aut.ense701.gameModel;
 
 /**
  * This class represents a tool that can be found on the island

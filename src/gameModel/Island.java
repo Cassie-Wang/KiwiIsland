@@ -1,4 +1,4 @@
-package gameModel;
+package nz.ac.aut.ense701.gameModel;
 
 /**
  * A class to represent an island in the world on which the game is played.

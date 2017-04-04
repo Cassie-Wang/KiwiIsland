@@ -1,15 +1,13 @@
-package gui;
+package nz.ac.aut.ense701.gui;
 
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.io.FileNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
-import gameModel.Game;
-import gameModel.GameEventListener;
-import gameModel.GameState;
-import gameModel.MoveDirection;
+import nz.ac.aut.ense701.gameModel.Game;
+import nz.ac.aut.ense701.gameModel.GameEventListener;
+import nz.ac.aut.ense701.gameModel.GameState;
+import nz.ac.aut.ense701.gameModel.MoveDirection;
 
 /*
  * User interface form for Kiwi Island.
@@ -35,8 +33,13 @@ public class KiwiCountUI
         initComponents();
         initIslandGrid();
         update();
+        CenterPanel();
     }
-    
+    public void CenterPanel(){
+    int width = Toolkit.getDefaultToolkit().getScreenSize().width;
+    int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+    this.setLocation((width/2)-300, (height/2)-350);
+}
     /**
      * This method is called by the game model every time something changes.
      * Trigger an update.
@@ -53,11 +56,7 @@ public class KiwiCountUI
                     this, 
                     game.getLoseMessage(), "Game over!",
                     JOptionPane.INFORMATION_MESSAGE);
-            try {
-                game.createNewGame();
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(KiwiCountUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            game.createNewGame();
         }
         else if ( game.getState() == GameState.WON )
         {
@@ -65,11 +64,7 @@ public class KiwiCountUI
                     this, 
                     game.getWinMessage(), "Well Done!",
                     JOptionPane.INFORMATION_MESSAGE);
-            try {
-                game.createNewGame();
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(KiwiCountUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            game.createNewGame();
         }
         else if (game.messageForPlayer())
         {

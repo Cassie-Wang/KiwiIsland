@@ -1,8 +1,8 @@
-package main;
+package nz.ac.aut.ense701.main;
 
-import java.io.FileNotFoundException;
-import gameModel.Game;
-import gui.KiwiCountUI;
+import nz.ac.aut.ense701.gameModel.Game;
+import nz.ac.aut.ense701.gui.KiwiCountUI;
+import nz.ac.aut.ense701.gui.StartPage;
 
 /**
  * Kiwi Count Project
@@ -17,19 +17,20 @@ public class Main
      * 
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws FileNotFoundException 
+    public static void main(String[] args) 
     {
         // create the game object
-        final Game game = new Game();
+        //final Game game = new Game();
         // create the GUI for the game
-        final KiwiCountUI  gui  = new KiwiCountUI(game);
+        //final KiwiCountUI  gui  = new KiwiCountUI(game);
         // make the GUI visible
+        final StartPage st = new StartPage();
         java.awt.EventQueue.invokeLater(new Runnable() 
         {
             @Override
             public void run() 
             {
-                gui.setVisible(true);
+                st.setVisible(true);
             }
         });
     }

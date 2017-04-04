@@ -1,5 +1,5 @@
 
-package gameModel;
+package nz.ac.aut.ense701.gameModel;
 
 /**
  * Kiwi represents a kiwi living on the island
